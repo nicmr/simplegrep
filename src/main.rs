@@ -1,24 +1,50 @@
 use std::env;
 use std::fs::File;
 use std::io::prelude::*;
+use std::process;
 
 fn main() {
 
     let args: Vec<String> = env::args().collect();
 
+    let config = Config::new(&args).unwrap_or_else(|err| {
+        println!("Problem parsing arguments: {}", err);
+        process::exit(1);
+    });
 
-    let query = &args[1];
-    let filename = &args[2];
+    println!("I'm searching for '{}'", config.query);
+    println!("in file {}", config.filename);
 
-    println!("I'm searching for {}", query);
-    println!("in file {}", filename);
+    run(config);
+    
+}
 
 
-    let mut f = File::open(filename).expect("Can't find the file");
+fn run(config: Config){
+    let mut f = File::open(config.filename).expect("Can't find the file");
 
     let mut contents = String::new();
     f.read_to_string(&mut contents)
         .expect("Encountered an error reading the file");
 
     println!("With text: \n{}", contents);
+    
+}
+
+
+struct Config{
+    query: String,
+    filename: String,
+}
+impl Config{
+    fn new(args: &[String]) -> Result<Config, &'static str>{
+
+        if args.len() <3{
+            return Err("At least two arguments required");
+        }
+        let query = args[1].clone();
+        let filename = args[2].clone();
+
+        Ok(Config{query, filename})
+    }
 }
