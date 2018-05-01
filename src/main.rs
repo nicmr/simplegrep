@@ -1,6 +1,6 @@
 use std::env;
 use std::fs::File;
-use std:io::prelude::*;
+use std::io::prelude::*;
 
 fn main() {
 
@@ -18,7 +18,7 @@ fn main() {
 
     let mut contents = String::new();
     f.read_to_string(&mut contents)
-        .expect("Encountered an error reading the file")
+        .expect("Encountered an error reading the file");
 
     println!("With text: \n{}", contents);
 }
