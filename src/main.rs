@@ -2,6 +2,7 @@ use std::env;
 use std::fs::File;
 use std::io::prelude::*;
 use std::process;
+use std::error::Error;
 
 fn main() {
 
@@ -15,20 +16,25 @@ fn main() {
     println!("I'm searching for '{}'", config.query);
     println!("in file {}", config.filename);
 
-    run(config);
+    if let Err(e) = run(config){
+        println!("Application Error: {}", e);
+        process::exit(1);
+    }
     
 }
 
 
-fn run(config: Config){
-    let mut f = File::open(config.filename).expect("Can't find the file");
+fn run(config: Config)-> Result<(),Box<Error>>{
+    let mut f = File::open(config.filename)?;
 
     let mut contents = String::new();
-    f.read_to_string(&mut contents)
-        .expect("Encountered an error reading the file");
+    // f.read_to_string(&mut contents)
+    //     .expect("Encountered an error reading the file");
+    f.read_to_string(&mut contents)?;
 
     println!("With text: \n{}", contents);
-    
+
+    Ok(())
 }
 
 
