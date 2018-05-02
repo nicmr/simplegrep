@@ -1,8 +1,9 @@
+extern crate simplegrep;
+
 use std::env;
-use std::fs::File;
-use std::io::prelude::*;
 use std::process;
-use std::error::Error;
+use simplegrep::Config;
+
 
 fn main() {
 
@@ -16,41 +17,9 @@ fn main() {
     println!("I'm searching for '{}'", config.query);
     println!("in file {}", config.filename);
 
-    if let Err(e) = run(config){
+    if let Err(e) = simplegrep::run(config){
         println!("Application Error: {}", e);
         process::exit(1);   
     }
     
-}
-
-
-fn run(config: Config)-> Result<(),Box<Error>>{
-    let mut f = File::open(config.filename)?;
-
-    let mut contents = String::new();
-    // f.read_to_string(&mut contents)
-    //     .expect("Encountered an error reading the file");
-    f.read_to_string(&mut contents)?;
-
-    println!("With text: \n{}", contents);
-
-    Ok(())
-}
-
-
-struct Config{
-    query: String,
-    filename: String,
-}
-impl Config{
-    fn new(args: &[String]) -> Result<Config, &'static str>{
-
-        if args.len() <3{
-            return Err("At least two arguments required");
-        }
-        let query = args[1].clone();
-        let filename = args[2].clone();
-
-        Ok(Config{query, filename})
-    }
 }
