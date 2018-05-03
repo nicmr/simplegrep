@@ -4,7 +4,6 @@ use std::env;
 use std::process;
 use simplegrep::Config;
 
-
 fn main() {
 
     let args: Vec<String> = env::args().collect();
@@ -21,5 +20,4 @@ fn main() {
         println!("Application Error: {}", e);
         process::exit(1);   
     }
-    
 }
