@@ -1,6 +1,6 @@
-#simplgrep
+# simplgrep
 
-##A grep implementation
+## A grep implementation
 
 An implementation of the classic grep command line tool, which allows you to search text files for a keyword and return matching lines.
 
